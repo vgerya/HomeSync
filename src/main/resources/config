@@ -1,0 +1,18 @@
+{
+    // path to folder where Sync will store its internal data, folder must exist on disk
+    "storage_path" : "/Users/user/.SyncAPI",
+
+    // run Sync in GUI-less mode
+    "use_gui" : false,
+
+    "webui" : {
+        // IP address and port to access HTTP API
+        "listen" : "127.0.0.1:8888",
+        // login and password for HTTP basic authentication authentication is optional, but it's recommended to use some
+        // secret values unique for each Sync installation
+        "login" : "api",
+        "password" : "secret",
+        // replace xxx with API key received from BitTorrent
+        "api_key" : "xxx"
+    }
+}
