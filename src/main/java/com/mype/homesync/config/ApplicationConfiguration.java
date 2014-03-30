@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ApplicationConfiguration {
-    @XmlElement(name = "storage_path")
+    @XmlElement(name="storage_path")
     private String storagePath;
     @XmlElement(name = "use_gui")
     private boolean useGui;
