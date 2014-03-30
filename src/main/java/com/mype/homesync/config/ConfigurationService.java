@@ -16,7 +16,7 @@ public class ConfigurationService {
 
     private File configurationDir;
     private File configurationFile;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     {
         JaxbAnnotationModule module = new JaxbAnnotationModule();
@@ -34,7 +34,15 @@ public class ConfigurationService {
         return configurationDir;
     }
 
+    public File getConfigurationFile() {
+        return this.configurationFile;
+    }
+
     public void save(final ApplicationConfiguration config) throws IOException {
         mapper.writeValue(configurationFile, config);
+    }
+
+    public ApplicationConfiguration load() throws IOException {
+        return mapper.readValue(configurationFile, ApplicationConfiguration.class);
     }
 }

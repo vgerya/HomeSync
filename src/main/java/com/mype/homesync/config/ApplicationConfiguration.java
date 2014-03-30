@@ -45,6 +45,27 @@ public class ApplicationConfiguration {
         this.webui = webui;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ApplicationConfiguration that = (ApplicationConfiguration) o;
+
+        if (useGui != that.useGui) return false;
+        if (storagePath != null ? !storagePath.equals(that.storagePath) : that.storagePath != null) return false;
+        if (!webui.equals(that.webui)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = storagePath != null ? storagePath.hashCode() : 0;
+        result = 31 * result + (useGui ? 1 : 0);
+        result = 31 * result + webui.hashCode();
+        return result;
+    }
 
     @Override
     public String toString() {

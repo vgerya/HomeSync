@@ -56,6 +56,30 @@ public class WebUI {
     }
 
     @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WebUI webUI = (WebUI) o;
+
+        if (!APIKey.equals(webUI.APIKey)) return false;
+        if (!login.equals(webUI.login)) return false;
+        if (!pasword.equals(webUI.pasword)) return false;
+        if (!webAccess.equals(webUI.webAccess)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = APIKey.hashCode();
+        result = 31 * result + webAccess.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + pasword.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("APIKey", APIKey).append("webAccess", webAccess).append("login", login).append("pasword", pasword).toString();
     }

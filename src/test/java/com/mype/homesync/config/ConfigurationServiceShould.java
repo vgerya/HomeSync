@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
+import java.io.FileWriter;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.contentOf;
@@ -42,14 +43,12 @@ public class ConfigurationServiceShould {
         initMocks(this);
 
         service = new ConfigurationService();
+        File file = tempDir.newFolder();
+        service.setConfigurationDir(file);
     }
 
     @Test
-    public void storeConfiguration() throws Exception {
-        File file = tempDir.newFolder();
-        service.setConfigurationDir(file);
-
-
+    public void saveConfiguration() throws Exception {
         ApplicationConfiguration config = new ApplicationConfiguration();
         config.setStoragePath("STORAGE_PATH");
         config.setUseGui(false);
@@ -62,8 +61,8 @@ public class ConfigurationServiceShould {
         config.setWebui(webUI);
         service.save(config);
 
-        assertThat(new File(file, service.CONFIGURATION_FILE_NAME)).exists().isFile();
-        assertThat(contentOf(new File(file, service.CONFIGURATION_FILE_NAME))).
+        assertThat(service.getConfigurationFile()).exists().isFile();
+        assertThat(contentOf(service.getConfigurationFile())).
                 contains("\"storage_path\" : \"STORAGE_PATH\"").
                 contains("\"use_gui\" : false").
                 contains("\"webui\" : {").
@@ -73,5 +72,40 @@ public class ConfigurationServiceShould {
                 contains("\"api_key\" : \"xxx\"");
 
     }
+
+    @Test
+    public void loadConfigurationFromFile() throws Exception {
+        final String content = "{\n" +
+                "    \"storage_path\" : \"STORAGE_PATH\",\n" +
+                "    \"use_gui\" : false,\n" +
+                "    \"webui\" : {\n" +
+                "        \"listen\" : \"127.0.0.1:8888\",\n" +
+                "        \"login\" : \"api\",\n" +
+                "        \"password\" : \"secret\",\n" +
+                "        \"api_key\" : \"xxx\"\n" +
+                "     }\n" +
+                "}";
+        File file = service.getConfigurationFile();
+        try(FileWriter writer = new FileWriter(file)){
+            writer.write(content);
+            writer.flush();
+        }
+
+        ApplicationConfiguration expectedConfig = new ApplicationConfiguration();
+        expectedConfig.setStoragePath("STORAGE_PATH");
+        expectedConfig.setUseGui(false);
+
+        WebUI webUI = new WebUI();
+        webUI.setWebAccess("127.0.0.1:8888");
+        webUI.setLogin("api");
+        webUI.setPasword("secret");
+        webUI.setAPIKey("xxx");
+        expectedConfig.setWebui(webUI);
+
+        ApplicationConfiguration config = service.load();
+
+        assertThat(config).isEqualsToByComparingFields(expectedConfig);
+    }
+
 
 }
