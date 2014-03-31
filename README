@@ -3,7 +3,7 @@ User stories
 ========================================================================================================================
 US 1: Configuration should be created, changed, read and put to FS.
     Config file should be created from configuration on disk.
-US 2:
+US 2: BT daeon should be started/stopped with configuration
 
 
 
