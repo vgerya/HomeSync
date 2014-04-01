@@ -1,5 +1,8 @@
 package com.mype.homesync.ui;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.mype.homesync.bt.BitTorrentModule;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +14,7 @@ import javafx.stage.Stage;
  */
 public class HomeSyncMain extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("homesync.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
@@ -20,6 +23,7 @@ public class HomeSyncMain extends Application {
 
 
     public static void main(String[] args) {
+        Injector injector = Guice.createInjector(new BitTorrentModule());
         launch(args);
     }
 }

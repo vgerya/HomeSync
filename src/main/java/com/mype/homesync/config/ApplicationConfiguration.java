@@ -21,6 +21,22 @@ public class ApplicationConfiguration {
     @XmlElement(name = "webui")
     private WebUI webui;
 
+    public ApplicationConfiguration() {
+    }
+
+    public static ApplicationConfiguration createDefault() {
+        final ApplicationConfiguration defaultConfig = new ApplicationConfiguration();
+        defaultConfig.setStoragePath("config");
+        defaultConfig.setUseGui(true);
+        final WebUI webUI = new WebUI();
+        webUI.setLogin("api");
+        webUI.setPasword("secret");
+        webUI.setWebAccess("127.0.0.1:19195");
+        defaultConfig.setWebui(webUI);
+
+        return defaultConfig;
+    }
+
     public String getStoragePath() {
         return storagePath;
     }
@@ -71,4 +87,5 @@ public class ApplicationConfiguration {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("storagePath", storagePath).append("useGui", useGui).append("webui", webui).toString();
     }
+
 }

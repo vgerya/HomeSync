@@ -1,5 +1,8 @@
 package com.mype.homesync.bt;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.mype.homesync.config.ConfigurationService;
 
 import java.io.IOException;
@@ -12,8 +15,10 @@ import java.io.IOException;
  * @author Vitaliy Gerya
  */
 public class BitTorrentDaemon {
-    private Environment environment = new Environment();
-    private ConfigurationService configurationService = new ConfigurationService();
+    @Inject
+    private Environment environment;
+    @Inject
+    private ConfigurationService configurationService;
 
     private Process process;
 
@@ -52,6 +57,8 @@ public class BitTorrentDaemon {
     }
 
     public static void main(String[] args) throws IOException {
+        Injector injector = Guice.createInjector(new BitTorrentModule());
+        Environment instance = injector.getInstance(Environment.class);
         new BitTorrentDaemon().start();
     }
 }

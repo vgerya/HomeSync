@@ -32,7 +32,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
  *
  * @author Vitaliy Gerya
  */
-public class ConfigurationServiceShould {
+public class ConfigurationServiceImplShould {
     @Rule
     public TemporaryFolder tempDir = new TemporaryFolder();
 
@@ -42,7 +42,7 @@ public class ConfigurationServiceShould {
     public void setUp() throws Exception {
         initMocks(this);
 
-        service = new ConfigurationService();
+        service = new ConfigurationServiceImpl();
         File file = tempDir.newFolder();
         service.setConfigurationDir(file);
     }
@@ -105,6 +105,12 @@ public class ConfigurationServiceShould {
         ApplicationConfiguration config = service.load();
 
         assertThat(config).isEqualsToByComparingFields(expectedConfig);
+    }
+
+    @Test
+    public void ifConfigurationFileIsNotExistsCreteDefault() throws Exception {
+        ApplicationConfiguration firstLoadConfig = service.load();
+        assertThat(firstLoadConfig).isNotNull();
     }
 
 
